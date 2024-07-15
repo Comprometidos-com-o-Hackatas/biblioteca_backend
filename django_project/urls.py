@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet
+from core.biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet
 
 router = DefaultRouter()
 router.register(r'generos', GeneroViewSet, basename='generos')
