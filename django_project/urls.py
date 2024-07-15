@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from biblioteca.views import GeneroViewSet
+from biblioteca.views import GeneroViewSet, AutoresViewSet
 
 router = DefaultRouter()
 router.register(r'generos', GeneroViewSet, basename='generos')
+router.register(r'autores', AutoresViewSet, basename='autores')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
