@@ -19,6 +19,12 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+
 from core.biblioteca.views import GeneroViewSet, AutoresViewSet
 from core.usuario.router import router as usuarioRouter
 
@@ -29,5 +35,8 @@ router.register(r'autores', AutoresViewSet, basename='autores')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/usuarios/', include(usuarioRouter.urls)),
+    path('api/', include(usuarioRouter.urls)),
+    path('api/schema/', SpectacularAPIView.as_view(), name="schema"),
+    path('api/swagger/', SpectacularSwaggerView.as_view(), name="swagger"),
+    path('api/redoc/', SpectacularRedocView.as_view(), name="redoc"),
 ]
