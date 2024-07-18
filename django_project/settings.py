@@ -25,7 +25,14 @@ SECRET_KEY = 'django-insecure-^w8z-nf6d(w11=t-ejxvjngw#nh)n%lmfe40hc$jf2kf&(+agr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:8000",
+]
+
+
 
 
 # Application definition
@@ -37,14 +44,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "corsheaders",
     'core.biblioteca',
     'core.usuario',
-    'rest_framework'
+    'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -125,3 +135,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("core.usuario.authentication.TokenAuthentication",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+PASSAGE_APP_ID = "2jFnUqSKhygm8jEbOqYnlcIv"
+PASSAGE_API_KEY = 'dnCD5S8Aa5.HDtqzsNXYcmmj2aVSD8XKhDnC6V0tVRemBgxBLYfg7ccwntH5jBw8hosEhqnLCJs'
+PASSAGE_AUTH_STRATEGY = 2
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Biblioteca API",
+    "DESCRIPTION": "API para gerenciamento da Biblioteca, incluindo endpoints e documentação.",
+    "VERSION": "1.0.0",
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
