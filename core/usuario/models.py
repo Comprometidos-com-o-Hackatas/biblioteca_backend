@@ -4,11 +4,12 @@ from django.utils.translation import gettext_lazy as _
 
 from .managers import CustomUserManager
 
+import uuid
 
 class Usuario(AbstractUser):
     username = None
     email = models.EmailField(_("e-mail address"), unique=True)
-    passage_id = models.CharField(max_length=255, unique=True)
+    passage_id = models.CharField(max_length=255, unique=True, default=uuid.uuid4())
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
