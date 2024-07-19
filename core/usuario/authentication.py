@@ -3,8 +3,9 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
 from drf_spectacular.plumbing import build_bearer_security_scheme_object
-from passageindentity import Passage, PassageError
+from passageidentity import Passage, PassageError
 
+# from passageidentity.openapi_client.models import UserInfo
 from rest_framework import authentication
 from rest_framework.exceptions import AuthenticationFailed
 
@@ -13,6 +14,7 @@ from core.usuario.models import Usuario as User
 PASSAGE_APP_ID = settings.PASSAGE_APP_ID
 PASSAGE_API_KEY = settings.PASSAGE_API_KEY
 PASSAGE_AUTH_STRATEGY = settings.PASSAGE_AUTH_STRATEGY
+psg = Passage(PASSAGE_APP_ID, PASSAGE_API_KEY, auth_strategy=PASSAGE_AUTH_STRATEGY)
 
 class TokenAuthenticationScheme(OpenApiAuthenticationExtension):
     target_class = "core.authentication.TokenAuthentication"
