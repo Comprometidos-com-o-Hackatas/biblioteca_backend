@@ -17,14 +17,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet
+from biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet, LivrosViewSet
+from uploader.router import router as uploader_router
+from django.conf.urls.static import static 
+from django.conf import settings
 
 router = DefaultRouter()
 router.register(r'generos', GeneroViewSet, basename='generos')
 router.register(r'autores', AutoresViewSet, basename='autores')
 router.register(r'categorias', CategoriaViewSet)
+router.register(r'livros', LivrosViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path("api/media/", include(uploader_router.urls))
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
