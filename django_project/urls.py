@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet, LivrosViewSet
+from biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet, LivrosViewSet, LivroPegoViewSet
 from uploader.router import router as uploader_router
 from django.conf.urls.static import static 
 from django.conf import settings
@@ -27,6 +27,7 @@ router.register(r'generos', GeneroViewSet, basename='generos')
 router.register(r'autores', AutoresViewSet, basename='autores')
 router.register(r'categorias', CategoriaViewSet)
 router.register(r'livros', LivrosViewSet)
+router.register(r'livropego', LivroPegoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
