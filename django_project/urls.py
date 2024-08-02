@@ -28,7 +28,6 @@ from drf_spectacular.views import (
 )
 
 
-
 router = DefaultRouter()
 router.register(r'generos', GeneroViewSet, basename='generos')
 router.register(r'autores', AutoresViewSet, basename='autores')
