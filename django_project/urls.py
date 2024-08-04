@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from core.biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet
 from core.usuario.router import router as usuarioRouter
+from core.uploader.router import router as uploaderRouter
 
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -37,7 +39,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/', include(usuarioRouter.urls)),
+    path('api/media/', include(uploaderRouter.urls)),
     path('api/schema/', SpectacularAPIView.as_view(), name="schema"),
     path('api/swagger/', SpectacularSwaggerView.as_view(), name="swagger"),
     path('api/redoc/', SpectacularRedocView.as_view(), name="redoc"),
 ]
+
+urlpatterns += static(settings.MEDIA_ENDPOINT, document_root=settings.MEDIA_ROOT)
