@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from core.biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet, LivroViewSet
+from core.biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSet, LivroViewSet, LivroPegoViewSet
 from core.usuario.router import router as usuarioRouter
 from core.uploader.router import router as uploaderRouter
 
@@ -35,6 +35,7 @@ router.register(r'generos', GeneroViewSet, basename='generos')
 router.register(r'autores', AutoresViewSet, basename='autores')
 router.register(r'categorias', CategoriaViewSet)
 router.register(r'livro', LivroViewSet)
+router.register(r'livropego', LivroPegoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
