@@ -1,0 +1,39 @@
+[project]
+name = "biblioteca_backend"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Jaotarzan", email = "joaovssouza59@gmail.com"},
+    {name = "tecinfoifc", email = "luansilva250807@gmail.com"},
+    {name = "luansilva25", email = "luansilva250807@gmail.com"},
+]
+dependencies = [
+    "django>=5.0.7",
+    "djangorestframework>=3.15.2",
+    "setuptools>=70.3.0",
+    "drf-spectacular>=0.27.2",
+    "django-cors-headers>=4.4.0",
+    "passage-identity>=2.1.4",
+    "cffi>=1.16.0",
+    "rpds-py>=0.19.1",
+    "python-magic>=0.4.27",
+    "pillow>=10.4.0",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.scripts]
+dev = "python manage.py runserver"
+runserver = "python manage.py runserver"
+createsuperuser = "python manage.py createsuperuser"
+migrate = "python manage.py migrate"
+makemigrations = "python manage.py makemigrations"
+shell = "python manage.py shell"
+test = "python manage.py test"
+startapp = "python manage.py startapp {args}"
+loaddata = "python manage.py loaddata {args}"
+dumpdata = "python manage.py dumpdata {args}"
