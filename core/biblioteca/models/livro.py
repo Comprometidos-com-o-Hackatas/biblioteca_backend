@@ -13,6 +13,7 @@ class Livro(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     generos = models.ManyToManyField(Generos)
     autores = models.ManyToManyField(Autores)
+    nota = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
 
     def __str__(self) -> str:
         return self.titulo
