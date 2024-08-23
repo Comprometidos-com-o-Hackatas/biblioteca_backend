@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from rest_framework.parses import JSONParser
+from rest_framework.parsers import JSONParser
 from weasyprint import HTML
 
 class GeneratePDFView(APIView):
@@ -9,7 +9,7 @@ class GeneratePDFView(APIView):
     # Remove a DjangoModelPermissionsOrAnonReadOnly se aplicada globalmente a remove localmente pois é desnecessária ja que a nescessidade é apenas gerar um PDF 
     permission_classes = []
 
-    def get(self, request):
+    def post(self, request):
         # Recebe o template HMTL Via post
         html_content = request.data.get('html', '')
 
