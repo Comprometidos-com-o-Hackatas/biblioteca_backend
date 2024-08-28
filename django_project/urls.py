@@ -43,7 +43,7 @@ router.register(r'livropego', LivroPegoViewSet, basename='livros_pegos')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/', include(usuarioRouter.urls)),
+    path('api/users/', include(usuarioRouter.urls)),
     path('api/media/', include(uploaderRouter.urls)),
     path('api/schema/', SpectacularAPIView.as_view(), name="schema"),
     path('api/swagger/', SpectacularSwaggerView.as_view(), name="swagger"),
