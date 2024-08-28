@@ -1,5 +1,5 @@
 from django.db import models
-from core.biblioteca.models.livroPego import LivroPego
+from core.biblioteca.models import LivroPego
 from datetime import datetime, timedelta
 
 class Taxas(models.Model):
