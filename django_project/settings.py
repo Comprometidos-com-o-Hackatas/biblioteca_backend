@@ -34,7 +34,18 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://render.com"]
 
+CORS_ALLOWED_ALL_ORIGINS = True
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
 
 # Application definition
 
@@ -87,11 +98,22 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+""""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+"""""
+DATABASES = {
+    'default': {
+        'ENGINE': "django.db.backends.postgresql_psycopg2",
+        'HOST': "aws-0-us-west-1.pooler.supabase.com",
+        'NAME': "postgres",
+        'PORT': "6543",
+        "USER": "postgres.evupsoqmhislqycjcgpf",
+        "PASSWORD": "luan250807@#"
     }
 }
 
@@ -132,6 +154,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_URL = "http://localhost:8000/media/"
 MEDIA_ENDPOINT = "/media/"
