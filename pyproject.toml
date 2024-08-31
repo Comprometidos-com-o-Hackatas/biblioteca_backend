@@ -6,6 +6,7 @@ authors = [
     {name = "Jaotarzan", email = "joaovssouza59@gmail.com"},
     {name = "tecinfoifc", email = "luansilva250807@gmail.com"},
     {name = "luansilva25", email = "luansilva250807@gmail.com"},
+    {name = "Gabz047", email = "gabe1612mail@gmail.com"},
 ]
 dependencies = [
     "django>=5.0.7",
