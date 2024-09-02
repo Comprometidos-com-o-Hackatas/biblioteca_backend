@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-^w8z-nf6d(w11=t-ejxvjngw#nh)n%lmfe40hc$jf2kf&(+agr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+MODE = "MIGRATE"
+
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -56,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     "corsheaders",
     'core.biblioteca',
     'core.usuario',
@@ -66,6 +70,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
@@ -153,13 +158,29 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dzdrwmug3',
+    'API_KEY': '741644777853926',
+    'API_SECRET': 'UvCHKnDuW0NhXZfXgLtOptBmTtc',
+    'PREFIX': 'biblioteca',
+}
+
+if MODE in ["PRODUCTION", "MIGRATE"]:
+    CLOUDINARY_URL = "cloudinary://143358223356937:Goo41n0pD_AltNYYWXTGb8sg66I@dzdrwmug3"
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    MEDIA_URL = '/media/'
+else:
+    MY_IP = os.getenv("MY_IP", "127.0.0.1")
+    MEDIA_URL = f"http://{MY_IP}:19003/media/"
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-MEDIA_URL = "http://localhost:8000/media/"
 MEDIA_ENDPOINT = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 FILE_UPLOAD_PERMISSIONS = 0o640
