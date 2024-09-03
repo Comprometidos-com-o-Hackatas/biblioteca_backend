@@ -23,7 +23,10 @@ from core.biblioteca.views import CategoriaViewSet, GeneroViewSet, AutoresViewSe
 from core.biblioteca.views import CategoriaViewSet, GeneratePDFView, GeneroViewSet, AutoresViewSet, LivroViewSet, LivroPegoViewSet
 from core.usuario.router import router as usuarioRouter
 from core.uploader.router import router as uploaderRouter
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -45,6 +48,8 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/users/', include(usuarioRouter.urls)),
     path('api/media/', include(uploaderRouter.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/schema/', SpectacularAPIView.as_view(), name="schema"),
     path('api/swagger/', SpectacularSwaggerView.as_view(), name="swagger"),
     path('api/redoc/', SpectacularRedocView.as_view(), name="redoc"),

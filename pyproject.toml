@@ -27,6 +27,7 @@ dependencies = [
     "white>=0.1.2",
     "noise>=1.2.2",
     "whitenoise>=6.7.0",
+    "djangorestframework-simplejwt>=5.3.1",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
