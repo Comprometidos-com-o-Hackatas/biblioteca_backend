@@ -193,15 +193,10 @@ FILE_UPLOAD_PERMISSIONS = 0o640
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
 }
-
-PASSAGE_APP_ID = "2jFnUqSKhygm8jEbOqYnlcIv"
-PASSAGE_API_KEY = 'dnCD5S8Aa5.HDtqzsNXYcmmj2aVSD8XKhDnC6V0tVRemBgxBLYfg7ccwntH5jBw8hosEhqnLCJs'
-PASSAGE_AUTH_STRATEGY = 2
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Biblioteca API",
