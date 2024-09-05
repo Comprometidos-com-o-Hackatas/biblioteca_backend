@@ -10,7 +10,7 @@ class Livro(models.Model):
     descricao = models.TextField()
     data_lancamento = models.DateField()
     disponivel = models.BooleanField(default=True)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True)
     generos = models.ManyToManyField(Generos)
     autores = models.ManyToManyField(Autores)
     nota = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
