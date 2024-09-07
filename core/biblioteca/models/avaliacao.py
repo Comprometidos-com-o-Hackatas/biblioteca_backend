@@ -10,17 +10,19 @@ class Avaliacao(models.Model):
     coment = models.TextField()
     nota = models.IntegerField()
 
-@receiver(post_save, sender=Avaliacao)
-def CalcularNota(instance, sender, **kwargs):
-    avaliacoes = Avaliacao.objects.filter(livros=instance.livro)
-    nota_geral = instance.nota
-
-    for avaliacao in avaliacoes:
-            nota_geral += avaliacao.nota 
-        
-    nota_geral = nota_geral / (len(avaliacoes) + 1)
-    instance.livro.nota = nota_geral
-    instance.livro.save()
-
     def __str__(self) -> str:
         return self.livro.titulo
+
+
+
+@receiver(post_save, sender=Avaliacao)
+def CalcularNota(instance, sender, **kwargs):
+    avaliacoes = Avaliacao.objects.filter(livro=instance.livro)
+    
+    if avaliacoes.exists():
+        nota_geral = sum(avaliacao.nota for avaliacao in avaliacoes) / avaliacoes.count()
+    else:
+        nota_geral = instance.nota
+    
+    instance.livro.nota = nota_geral
+    instance.livro.save()

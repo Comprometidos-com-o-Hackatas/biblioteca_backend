@@ -4,6 +4,7 @@ from ..serializers import LivroPegoSerializer
 
 class LivroPegoViewSet(ModelViewSet):
     def get_queryset(self):
+        print(self.request.user)
         if self.request.user.is_superuser:
             return LivroPego.objects.all()
         return LivroPego.objects.filter(usuario=self.request.user)
