@@ -6,7 +6,7 @@ class LivroPego(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
     data_pego = models.DateField(auto_now=True)
-    data_devolucao = models.DateField()
+    data_devolucao = models.DateField(default=None)
 
     def __str__(self) -> str:
         return self.usuario.email
