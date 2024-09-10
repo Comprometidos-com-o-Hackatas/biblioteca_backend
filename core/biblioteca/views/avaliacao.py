@@ -1,7 +1,6 @@
 from ..models import Avaliacao
 from ..serializers import AvaliacaoCreateSerializer, AvaliacaoSerializer
 from rest_framework.viewsets import ModelViewSet
-import json
 
 class AvaliacaoViewSet(ModelViewSet):
     queryset = Avaliacao.objects.all()

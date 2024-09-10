@@ -10,4 +10,4 @@ class LivroPegoSerializer(ModelSerializer):
     class Meta:
         model = LivroPego  
         fields = '__all__'
-        depth = 1
+        depth = 2
