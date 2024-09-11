@@ -8,7 +8,7 @@ class Usuario(AbstractUser):
     username = None
     email = models.EmailField(_("e-mail address"), unique=True)
     has_book = models.BooleanField(default=False)
-    age = models.IntegerField(max_length=3, default=0)
+    age = models.IntegerField(default=0)
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
