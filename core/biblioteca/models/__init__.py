@@ -5,3 +5,5 @@ from .livro import Livro
 from .livroPego import LivroPego
 from .avaliacao import Avaliacao
 from .favorito import Favorito
+from .blockedBooks import BlockedLivros
+from .familia import Familia
