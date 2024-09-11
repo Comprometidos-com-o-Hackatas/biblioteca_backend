@@ -130,26 +130,25 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+""""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-""""
+"""""""""
 DATABASES = {
     'default': {
         'ENGINE': "django.db.backends.postgresql_psycopg2",
         'HOST': "aws-0-us-west-1.pooler.supabase.com",
         'NAME': "postgres",
         'PORT': "6543",
-        "USER": "postgres.evupsoqmhislqycjcgpf",
-        "PASSWORD": "luan250807@#"
+        "USER": "postgres.bhuzqvriqaggtmhzssrm",
+        "PASSWORD": "comprometidos2024"
     }
 }
-"""""""""
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
