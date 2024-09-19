@@ -1,7 +1,13 @@
 from rest_framework.serializers import ModelSerializer
 from ..models import LivroPego
 
+class LivroPegoCreateSerializer(ModelSerializer):
+    class Meta:
+        model = LivroPego
+        fields = '__all__'
+
 class LivroPegoSerializer(ModelSerializer):
-    model = LivroPego  
-    fields = ['id', 'livro']
-    depth = 1
+    class Meta:
+        model = LivroPego  
+        fields = '__all__'
+        depth = 2
