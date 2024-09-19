@@ -9,9 +9,9 @@ class LivroPegoViewSet(ModelViewSet):
     authentication_classes = [JWTAuthentication]
     def get_queryset(self):
         print(self.request.user)
-        if self.request.user.is_superuser:
-            return LivroPego.objects.all()
-        return LivroPego.objects.filter(usuario=self.request.user)
+      
+        return LivroPego.objects.all()
+       
     
     def get_serializer_class(self):
         if self.action == 'create':
