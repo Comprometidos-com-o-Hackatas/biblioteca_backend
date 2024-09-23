@@ -64,7 +64,6 @@ INSTALLED_APPS = [
     'cloudinary',
     'rest_framework_simplejwt',
     "corsheaders",
-    'django_extensions',
     'core.biblioteca',
     'core.usuario',
     'core.uploader',
