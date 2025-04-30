@@ -39,7 +39,6 @@ CSRF_TRUSTED_ORIGINS = [
     "http://livroamigoong.surge.sh",
 ]
 
-
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://render.com", "http://livroamigoong.surge.sh",]
 
 # CORS_ALLOWED_ALL_ORIGINS = True
