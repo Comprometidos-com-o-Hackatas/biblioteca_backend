@@ -25,4 +25,4 @@ RUN pdm makemigrations
 
 RUN pdm migrate
 
-CMD ["pdm", "run", "runserver", "0.0.0.0:8001"]
+CMD ["pdm", "run", "gunicorn", "django_project.wsgi:application", "--bind", "0.0.0.0:8001"]
