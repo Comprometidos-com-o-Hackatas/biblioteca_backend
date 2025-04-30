@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+from dotenv import load_dotenv
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,14 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^w8z-nf6d(w11=t-ejxvjngw#nh)n%lmfe40hc$jf2kf&(+agr'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-MODE = "MIGRATE"
+MODE = os.environ.get('MODE')
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
@@ -40,7 +42,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://render.com", "http://livroamigoong.surge.sh",]
 
-CORS_ALLOWED_ALL_ORIGINS = True
+# CORS_ALLOWED_ALL_ORIGINS = True
 
 CORS_ALLOW_METHODS = (
     "DELETE",
@@ -85,8 +87,8 @@ MIDDLEWARE = [
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.environ.get('ACCESS_TOKEN_LIFETIME'))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=int(os.environ.get('REFRESH_TOKEN_LIFETIME'))),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
@@ -124,6 +126,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 WSGI_APPLICATION = 'django_project.wsgi.application'
@@ -141,15 +144,10 @@ DATABASES = {
 """""""""
 DATABASES = {
     'default': {
-        'ENGINE': "django.db.backends.postgresql_psycopg2",
-        'HOST': "aws-0-us-west-1.pooler.supabase.com",
-        'NAME': "postgres",
-        'PORT': "6543",
-        "USER": "postgres.bhuzqvriqaggtmhzssrm",
-        "PASSWORD": "comprometidos2024"
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -187,20 +185,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dzdrwmug3',
-    'API_KEY': '741644777853926',
-    'API_SECRET': 'UvCHKnDuW0NhXZfXgLtOptBmTtc',
-    'PREFIX': 'biblioteca',
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'PREFIX': os.environ.get('CLOUDINARY_PREFIX'),
 }
 
 if MODE in ["PRODUCTION", "MIGRATE"]:
-    CLOUDINARY_URL = "cloudinary://143358223356937:Goo41n0pD_AltNYYWXTGb8sg66I@dzdrwmug3"
+    CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     MEDIA_URL = '/media/'
 else:
-    MY_IP = os.getenv("MY_IP", "127.0.0.1")
+    MY_IP = os.environ.get('MY_IP', '127.0.0.1')
     MEDIA_URL = f"http://{MY_IP}:19003/media/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -218,14 +216,8 @@ FILE_UPLOAD_PERMISSIONS = 0o640
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-}
-
 SPECTACULAR_SETTINGS = {
     "TITLE": "Biblioteca API",
     "DESCRIPTION": "API para gerenciamento da Biblioteca, incluindo endpoints e documentação.",
     "VERSION": "1.0.0",
 }
-
-CORS_ALLOW_ALL_ORIGINS = True
