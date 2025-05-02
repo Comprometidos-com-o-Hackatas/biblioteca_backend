@@ -1,0 +1,34 @@
+version: "3.9"  # Define a versão do Compose
+
+services:
+  web:
+    build: .
+    container_name: django_app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db  
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-^w8z-nf6d(w11=t-ejxvjngw#nh)n%lmfe40hc$jf2kf&(+agr
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+
+volumes:
+  postgres_data:

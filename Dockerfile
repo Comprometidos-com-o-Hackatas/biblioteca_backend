@@ -21,10 +21,6 @@ COPY . /app
 
 EXPOSE 8001
 
-RUN pdm makemigrations
-
-RUN pdm migrate
-
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 CMD ["/app/start.sh"]

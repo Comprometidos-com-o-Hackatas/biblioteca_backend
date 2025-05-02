@@ -1,0 +1,198 @@
+Passo 1: Criando o Dockerfile
+Crie um arquivo chamado Dockerfile no diretório raiz do seu projeto.
+
+dockerfile
+
+FROM python:3.12
+
+# Definindo o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Variáveis de ambiente para não gerar arquivos bytecode e manter os logs no terminal
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Instalando dependências do sistema
+RUN apt-get update && \
+    apt-get install -y build-essential curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Atualizando o pip e instalando o pdm
+RUN pip install --upgrade pip && pip install pdm
+
+# Copiando os arquivos de dependências para instalar os pacotes
+COPY pyproject.toml pdm.lock* /app/
+COPY README.md /app/README.md
+
+# Instalando as dependências do projeto
+RUN pdm install
+
+# Copiando o restante do projeto para o container
+COPY . /app
+
+# Expondo a porta 8001, onde o Django vai rodar
+EXPOSE 8001
+
+# Copiando o script de inicialização para o container
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Definindo o comando para rodar o start.sh
+CMD ["/app/start.sh"]
+Passo 2: Criando o script de inicialização (start.sh)
+Crie um arquivo chamado start.sh no diretório raiz do seu projeto.
+
+bash
+
+#!/bin/sh
+
+echo "📦 Rodando makemigrations..."
+pdm run python manage.py makemigrations
+
+echo "📂 Rodando migrate..."
+pdm run python manage.py migrate
+
+echo "🚀 Iniciando Gunicorn..."
+pdm run gunicorn django_project.wsgi:application --bind 0.0.0.0:8000
+Passo 3: Criando o arquivo docker-compose.yml
+Crie um arquivo chamado docker-compose.yml no diretório raiz do seu projeto.
+
+yaml
+
+version: "3.9"  # Define a versão do Compose
+
+services:
+  web:
+    build: .
+    container_name: django_app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db  
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-^w8z-nf6d(w11=t-ejxvjngw#nh)n%lmfe40hc$jf2kf&(+agr
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+
+volumes:
+  postgres_data:
+Passo 4: Configurando o arquivo settings.py do Django
+No seu arquivo settings.py, você precisa configurar a conexão com o banco de dados PostgreSQL e outros parâmetros de configuração.
+
+Carregar variáveis de ambiente
+
+Adicione o código para carregar as variáveis de ambiente no início do seu settings.py:
+
+python
+
+from dotenv import load_dotenv
+import os
+
+# Carregar as variáveis do arquivo .env
+load_dotenv()
+Configurar o banco de dados
+
+Substitua a configuração do banco de dados SQLite pela configuração do PostgreSQL, conforme abaixo:
+
+python
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+    }
+}
+Configuração do CORS (se necessário)
+
+Se você está fazendo requisições de outro domínio, adicione as configurações de CORS:
+
+python
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://seu-dominio.com", "http://livroamigoong.surge.sh"]
+Passo 5: Criando o arquivo .env
+Crie um arquivo chamado .env no diretório raiz do seu projeto para armazenar as variáveis de ambiente de forma segura.
+
+ini
+
+SECRET_KEY=django-insecure-^w8z-nf6d(w11=t-ejxvjngw#nh)n%lmfe40hc$jf2kf&(+agr
+DEBUG=True
+MODE=MIGRATE
+ALLOWED_HOSTS=*
+
+DB_NAME=postgres
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=db
+DB_PORT=5432
+
+ACCESS_TOKEN_LIFETIME=1
+REFRESH_TOKEN_LIFETIME=5
+
+CLOUDINARY_CLOUD_NAME=dzdrwmug3
+CLOUDINARY_API_KEY=741644777853926
+CLOUDINARY_API_SECRET=UvCHKnDuW0NhXZfXgLtOptBmTtc
+CLOUDINARY_URL=cloudinary://143358223356937:Goo41n0pD_AltNYYWXTGb8sg66I@dzdrwmug3
+CLOUDINARY_PREFIX=biblioteca
+
+MY_IP=127.0.0.1
+Passo 6: Instalar o Gunicorn
+Adicione o gunicorn como dependência do seu projeto. Se você está usando o pdm, basta adicionar o gunicorn no seu arquivo pyproject.toml ou rodar o comando:
+
+bash
+
+pdm add gunicorn
+No start.sh, já incluímos o comando para rodar o Gunicorn, que vai iniciar o Django no container.
+
+Passo 7: Subindo o ambiente Docker
+Agora, você pode subir seu ambiente Docker. Execute o seguinte comando na raiz do seu projeto:
+
+bash
+
+docker-compose up --build
+Este comando vai:
+
+Construir a imagem do seu container web usando o Dockerfile.
+
+Subir os containers do Django e do PostgreSQL.
+
+Rodar o Django com o Gunicorn na porta 8000.
+
+Passo 8: Verificando o funcionamento
+Após o docker-compose ter subido os containers, você pode acessar sua aplicação Django em http://localhost:8000 ou http://<IP-do-container>:8000.
+
+Resumo do processo
+Criar o Dockerfile para definir a configuração do container.
+
+Criar o start.sh para rodar as migrações e iniciar o Gunicorn.
+
+Configurar o docker-compose.yml para rodar os containers do Django e do PostgreSQL.
+
+Configurar o settings.py do Django para usar o PostgreSQL e carregar as variáveis de ambiente.
+
+Criar o arquivo .env para armazenar as variáveis de ambiente sensíveis.
+
+Instalar o Gunicorn como servidor WSGI.
+
+Rodar o Docker com docker-compose up --build.
+
